@@ -164,9 +164,11 @@ class Service_request(QThread):
             self.parent.ready_geocoding_array()
 
     def _validate_api_key(self, api_key):
+        # todo
         self.key = api_key
 
-    def get_path_beetween_cities(self, city1, city2):
+    def get_path_beetween_cities(self, *args):
+        # todo
         url_header = "https://maps.googleapis.com/maps/api/directions/json?language=pl"
         url_text = url_header + "&origin=" + city1 + "&destination=" + city2 + "&key=" + self.key
         url = QUrl(url_text)

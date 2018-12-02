@@ -9,18 +9,25 @@ from lib.parser import Service_request
 from lib.genetic.algorithm import Evolutionary
 
 
-class Main_frame(QMainWindow):
+class MainFrame(QMainWindow):
+    """This class implements main window for my Gui application"""
     def __init__(self):
-        super(Main_frame, self).__init__()
-        key = os.environ["API_KEY"]
-        self.setup_GUI()
+        super(MainFrame, self).__init__()
+        key = os.environ["API_KEY"]  # enter here yours key from Google Cloud Platform
+        self.web_engine = None
+        self.distance_array = None
+        self.geocoding_array = None
+        self.direction_array = None
+        self.solver = None
+        self.setup_gui()
         self.client = Service_request(api_key=key, parent=self)
         self.client.get_cities_position("data/cities.txt")
         self.client.get_distance_matrix("data/cities.txt")
         self.solve_shortest_path()
         # self.client.get_path_beetween_cities("Gdańsk", "Bydgoszcz")
 
-    def setup_GUI(self):
+    def setup_gui(self):
+        """Create container for HTML file with map"""
         self.web_engine = QWebEngineView()
         self.setCentralWidget(self.web_engine)
         self.show()
@@ -55,10 +62,10 @@ class Main_frame(QMainWindow):
         lat, lng = zip(*sorted_array)
         gmap.plot(lat, lng)
         gmap.draw("map.html")
-        self.web_engine.load(QUrl().fromLocalFile("C:/Users/zbiku/Programowanie/Traveling-salesman-poland/map.html"))
+        self.web_engine.load(QUrl().fromLocalFile(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'map.html')))
 
 
 if __name__ == "__main__":
     _app = QApplication(sys.argv)
-    App = Main_frame()
+    App = MainFrame()
     sys.exit(_app.exec_())
